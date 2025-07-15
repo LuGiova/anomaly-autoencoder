@@ -52,15 +52,15 @@ class Encoder(nn.Module):
 class Decoder(nn.Module):
     def __init__(self):
         super().__init__()
-        self.fc = nn.Linear(4, 32 * 25 * 25)
-        self.deconv1 = nn.ConvTranspose2d(32, 16, 3, 2, 1, output_padding=1)
+        self.fc = nn.Linear(4, 64 * 25 * 25)
+        self.deconv1 = nn.ConvTranspose2d(64, 32, 3, 2, 1, output_padding=1)
         self.dropout1 = nn.Dropout2d(0.1)
-        self.deconv2 = nn.ConvTranspose2d(16, 8, 3, 2, 1, output_padding=1)
+        self.deconv2 = nn.ConvTranspose2d(32, 16, 3, 2, 1, output_padding=1)
         self.dropout2 = nn.Dropout2d(0.1)
-        self.deconv3 = nn.ConvTranspose2d(8, 1, 3, 1, 1)
+        self.deconv3 = nn.ConvTranspose2d(16, 1, 3, 1, 1)
 
     def forward(self, z):
-        x = self.fc(z).view(-1, 32, 25, 25)
+        x = self.fc(z).view(-1, 64, 25, 25)
         x = F.relu(self.deconv1(x))
         x = self.dropout1(x)
         x = F.relu(self.deconv2(x))
